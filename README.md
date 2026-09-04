@@ -30,6 +30,20 @@ of them mutate their arguments. That makes them straightforward to unit
 test and safe to call from wherever validation needs to happen (a form
 handler, an import pipeline, a CLI).
 
+## Non-book barcodes
+
+An ISBN-13 is an EAN-13 barcode under the Bookland prefix, so the same
+check-digit math applies to any other EAN-13 or UPC-A product barcode.
+`src/barcode.ts` exposes that directly, without the ISBN-specific rules:
+
+```ts
+import { isValidEan13, isValidUpcA, upcAToEan13 } from "./src/barcode.js";
+
+isValidEan13("4006381333931"); // true
+isValidUpcA("036000291452"); // true
+upcAToEan13("036000291452"); // "0036000291452"
+```
+
 ## Command line
 
 ```
@@ -51,8 +65,9 @@ after ISBN-10 was retired, so they have no 10-digit equivalent.
 
 ## Status
 
-Early skeleton. Core checksum math and ISBN-10/13 conversion are done and
-tested. See the roadmap in project notes for what's next.
+Early skeleton. Core checksum math, ISBN-10/13 conversion, and EAN-13/UPC-A
+barcode validation are done and tested. See the roadmap in project notes
+for what's next.
 
 ## Development
 

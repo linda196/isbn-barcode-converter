@@ -6,6 +6,8 @@
 // under the "978" or "979" Bookland prefix. ISBN-10 predates that and
 // uses its own mod-11 scheme with 'X' standing in for the digit 10.
 
+import { computeEan13CheckDigit } from "./barcode.js";
+
 export type Isbn10 = string;
 export type Isbn13 = string;
 
@@ -31,20 +33,12 @@ export function computeIsbn10CheckDigit(first9Digits: string): string {
 }
 
 /**
- * Computes the ISBN-13 / EAN-13 check digit for the first 12 digits.
- * Returns a single digit '0'-'9'.
+ * Computes the ISBN-13 check digit for the first 12 digits. Returns a
+ * single digit '0'-'9'. This is the EAN-13 checksum algorithm; see
+ * src/barcode.ts for the non-book barcode case.
  */
 export function computeIsbn13CheckDigit(first12Digits: string): string {
-  if (!/^\d{12}$/.test(first12Digits)) {
-    throw new RangeError("expected exactly 12 digits");
-  }
-  let sum = 0;
-  for (let i = 0; i < 12; i++) {
-    const weight = i % 2 === 0 ? 1 : 3;
-    sum += weight * Number(first12Digits[i]);
-  }
-  const remainder = (10 - (sum % 10)) % 10;
-  return String(remainder);
+  return computeEan13CheckDigit(first12Digits);
 }
 
 /** True if `input` is a syntactically and checksum-valid ISBN-10. */
