@@ -8,6 +8,7 @@ import {
   isbn10ToIsbn13,
   isbn13ToIsbn10,
   formatIsbn13,
+  formatIsbn10,
   normalize,
 } from "./isbn.js";
 
@@ -60,4 +61,17 @@ test("isbn10ToIsbn13 rejects an invalid ISBN-10", () => {
 
 test("formatIsbn13 groups digits with hyphens", () => {
   assert.equal(formatIsbn13("9780306406157"), "978-0-30640615-7");
+});
+
+test("formatIsbn10 groups digits with hyphens", () => {
+  assert.equal(formatIsbn10("0306406152"), "0-30640615-2");
+  assert.equal(formatIsbn10("0-306-40615-2"), "0-30640615-2");
+});
+
+test("formatIsbn10 preserves a trailing X check digit", () => {
+  assert.equal(formatIsbn10("080442957X"), "0-80442957-X");
+});
+
+test("formatIsbn10 rejects the wrong shape", () => {
+  assert.throws(() => formatIsbn10("12345"), /not a valid ISBN-10 shape/);
 });

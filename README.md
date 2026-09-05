@@ -22,7 +22,15 @@ isValidIsbn10("0-306-40615-3"); // false, check digit doesn't match
 
 isbn10ToIsbn13("0306406152"); // "9780306406157"
 isbn13ToIsbn10("9780306406157"); // "0306406152"
+
+formatIsbn10("0306406152"); // "0-30640615-2"
+formatIsbn13("9780306406157"); // "978-0-30640615-7"
 ```
+
+`formatIsbn10` and `formatIsbn13` add hyphens for display. Neither knows the
+real registrant/title boundary (that needs the ISBN range tables, which
+aren't included here), so both use a single block for that middle section
+instead of guessing at it.
 
 Every exported function is pure: given the same input it always returns
 the same output, none of them touch the filesystem or network, and none

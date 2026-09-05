@@ -98,3 +98,17 @@ export function formatIsbn13(input: Isbn13): string {
   }
   return [code.slice(0, 3), code.slice(3, 4), code.slice(4, 12), code.slice(12)].join("-");
 }
+
+/**
+ * Groups a normalized ISBN-10 as group-registrant/title-check, e.g.
+ * "0-30640615-2". Same caveat as formatIsbn13: the registrant/title
+ * boundary needs the ISBN range tables, so this uses a single block for
+ * that middle section rather than guessing at it.
+ */
+export function formatIsbn10(input: Isbn10): string {
+  const code = normalize(input);
+  if (!/^\d{9}[\dX]$/.test(code)) {
+    throw new RangeError(`not a valid ISBN-10 shape: ${input}`);
+  }
+  return [code.slice(0, 1), code.slice(1, 9), code.slice(9)].join("-");
+}
