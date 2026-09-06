@@ -65,6 +65,21 @@ node --experimental-strip-types src/cli.ts 9780306406157
 The CLI detects whether the input is ISBN-10 or ISBN-13 and converts to
 the other format. It exits non-zero and prints an error on invalid input.
 
+### Batch conversion
+
+```
+node --experimental-strip-types src/cli.ts --file codes.txt
+```
+
+Reads one code per line (ISBN-10 or ISBN-13, hyphenated or not), converts
+each to the other format, and prints one converted line per input line.
+Blank lines and lines starting with `#` are skipped. A line that fails to
+convert prints an error to stderr with its source line number and does not
+stop the rest of the file from being processed; the command exits non-zero
+if any line failed. The line-by-line logic lives in `src/batch.ts` as the
+pure function `convertBatch`, independent of file I/O, so it's usable
+anywhere a list of codes needs converting, not just from the CLI.
+
 ## Why 979 codes don't round-trip
 
 ISBN-13 codes starting with "979" (instead of "978") were introduced
@@ -73,9 +88,9 @@ after ISBN-10 was retired, so they have no 10-digit equivalent.
 
 ## Status
 
-Early skeleton. Core checksum math, ISBN-10/13 conversion, and EAN-13/UPC-A
-barcode validation are done and tested. See the roadmap in project notes
-for what's next.
+Early skeleton. Core checksum math, ISBN-10/13 conversion, EAN-13/UPC-A
+barcode validation, and batch file conversion are done and tested. See the
+roadmap in project notes for what's next.
 
 ## Development
 
