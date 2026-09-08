@@ -14,8 +14,12 @@ two formats.
 
 ## Usage
 
+Once installed, import from the package root for the ISBN functions, or
+from the `isbn-barcode-converter/barcode` and `isbn-barcode-converter/batch`
+subpaths for the barcode and batch-conversion functions:
+
 ```ts
-import { isbn10ToIsbn13, isbn13ToIsbn10, isValidIsbn10, isValidIsbn13 } from "./src/isbn.js";
+import { isbn10ToIsbn13, isbn13ToIsbn10, isValidIsbn10, isValidIsbn13 } from "isbn-barcode-converter";
 
 isValidIsbn10("0-306-40615-2"); // true
 isValidIsbn10("0-306-40615-3"); // false, check digit doesn't match
@@ -45,7 +49,7 @@ check-digit math applies to any other EAN-13 or UPC-A product barcode.
 `src/barcode.ts` exposes that directly, without the ISBN-specific rules:
 
 ```ts
-import { isValidEan13, isValidUpcA, upcAToEan13 } from "./src/barcode.js";
+import { isValidEan13, isValidUpcA, upcAToEan13 } from "isbn-barcode-converter/barcode";
 
 isValidEan13("4006381333931"); // true
 isValidUpcA("036000291452"); // true
@@ -64,6 +68,9 @@ node --experimental-strip-types src/cli.ts 9780306406157
 
 The CLI detects whether the input is ISBN-10 or ISBN-13 and converts to
 the other format. It exits non-zero and prints an error on invalid input.
+Once installed as a package, the same command is available as the
+`isbn-convert` bin, so `isbn-convert 0-306-40615-2` works without the
+`node --experimental-strip-types` prefix.
 
 ### Batch conversion
 
@@ -101,4 +108,6 @@ npm test
 ```
 
 which uses Node's built-in test runner against the TypeScript sources
-directly.
+directly. `npm run build` compiles `src/` to `dist/` with `tsc`; that's
+the output the package's `exports` map and `isbn-convert` bin point at,
+and it's what actually ships when the package is published.

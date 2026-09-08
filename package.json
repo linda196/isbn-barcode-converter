@@ -1,10 +1,36 @@
 {
   "name": "isbn-barcode-converter",
   "version": "0.1.0",
-  "private": true,
   "description": "Convert and validate ISBN-10, ISBN-13, and EAN-13 barcode checksums",
   "type": "module",
   "license": "MIT",
+  "author": "linda196",
+  "keywords": ["isbn", "isbn10", "isbn13", "ean13", "upc-a", "barcode", "checksum"],
+  "engines": {
+    "node": ">=20"
+  },
+  "main": "./dist/isbn.js",
+  "types": "./dist/isbn.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/isbn.d.ts",
+      "default": "./dist/isbn.js"
+    },
+    "./barcode": {
+      "types": "./dist/barcode.d.ts",
+      "default": "./dist/barcode.js"
+    },
+    "./batch": {
+      "types": "./dist/batch.d.ts",
+      "default": "./dist/batch.js"
+    }
+  },
+  "bin": {
+    "isbn-convert": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "node --test --experimental-strip-types src/*.test.ts"
